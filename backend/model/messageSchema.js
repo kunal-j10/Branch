@@ -2,7 +2,7 @@ const mongoose=require('mongoose')
 
 const messageSchema=new mongoose.Schema({
    userId:{
-     type:Integer
+     type:Number
    },
    timeStamp:{
      type:Date
@@ -15,5 +15,5 @@ const messageSchema=new mongoose.Schema({
    }
 })
 
-const message=mongoose.model('GeneralistRails_Project_MessageData',messageSchema)
-exports.module=message
+const Message=mongoose.model('chatdatas',messageSchema)
+module.exports=Message
