@@ -10,8 +10,11 @@ const messageSchema=new mongoose.Schema({
    messageBody:{
      type:String
    },
-   status:{
+   replyBody:{
     type:String
+   },
+   status:{
+    type:String,
    }
 })
 
