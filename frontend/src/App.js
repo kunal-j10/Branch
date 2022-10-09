@@ -14,6 +14,7 @@ function App() {
     document.getElementById("exampleModal").classList.toggle("hidden");
     setreload(!reload);
     setreply("");
+    document.getElementById('table').classList.toggle('blur-xl');
   };
 
   const replyandupdate=async(index)=>{
@@ -70,8 +71,8 @@ function App() {
     getData();
   }, [reload]);
   return (
-    <div className="flex justify-center p-3">
-      <table className="auto w-[90%] text-center">
+    <div className="flex justify-center p-3 ">
+      <table className="auto w-[90%] text-center " id="table">
         <tr className=" text-white bg-indigo-600">
           <th></th>
           <th className="px-6 py-3 font-bold">User Id</th>
@@ -108,7 +109,7 @@ function App() {
       </table>
 
       <div
-        class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
+        class="modal fade fixed top-[10%] left-[10%] right-[10%] w-[80%] hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
         id="exampleModal"
         tabindex="-1"
         aria-labelledby="exampleModalLabel"
@@ -117,16 +118,12 @@ function App() {
         <div class="modal-dialog relative w-auto pointer-events-none">
           <div class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
             <div class="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
-              <h5
-                class="text-xl font-medium leading-normal text-gray-800"
-                id="exampleModalLabel"
-              >
-                <div>
+             
+                <div className="bg-gray-300 p-3 w-full ">
                 {
-                  conversation && conversation.map((e)=>{return(<div><p>{e.messageBody}</p><p>{e.replyBody}</p></div>)})
+                  conversation && conversation.map((e)=>{return(<div><p className="p-3 text-sm my-2 "><div className="bg-white p-3 rounded-tr-3xl rounded-bl-3xl rounded-br-3xl mr-[60%]">{e.messageBody}</div></p><p className="text-right p-3 text-sm my-2" ><div className="bg-red-600 p-3 rounded text-sm text-white rounded-tl-3xl rounded-tr-3xl rounded-bl-3xl ml-[60%]" >{e.replyBody}</div></p><br/></div>)})
                 }
                 </div>
-              </h5>
               <button
                 onClick={popuptoggle}
                 type="button"
@@ -136,8 +133,11 @@ function App() {
               ></button>
             </div>
             <div class="modal-body relative p-4">
-               <input placeholder="reply to user" name="reply" value={reply} onChange={inputHandler} className="border border-black"></input>
-               <button onClick={()=>{replyandupdate(idx)}}>Send</button>
+              <p className="text-center my-2"><span className="font-bold">Replying to :</span> <span className="text-sm">{data && data[idx]&& data[idx].messageBody}</span></p>
+              <div className="flex justify-center">
+              <input className="rounded-tl-xl rounded-bl-xl py-1 px-2 border-2 outline-none" placeholder="reply to user" name="reply" value={reply} onChange={inputHandler} ></input>
+               <button className="bg-red-600 px-2 text-white hover:bg-red-400" onClick={()=>{replyandupdate(idx)}}>Send</button>
+              </div>
             </div>
             <div class="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 rounded-b-md">
               <button
