@@ -1,5 +1,6 @@
 const Message=require('../model/messageSchema')
 const Conversation=require('../model/conversationSchema')
+const User = require('../model/userschema')
 
 exports.fetchMessage=async(req,res)=>{
     try{
@@ -66,6 +67,62 @@ exports.fetchPrevMessages=async(req,res)=>{
        })
     }
     catch(err){
+        res.status(500).json({
+            success:false,
+            message:"Err in API Call of Fetch Message",
+        }) 
+    }
+}
+
+exports.Login=async(req,res)=>{
+    const {email,password}=req.body;
+    console.log(req.body);
+    try{
+          const response=await User.find({email:email,password:password})
+          if(response.length==1){
+            res.status(200).json({
+                success:true,
+                message:"Sign in successful"
+            })
+          }
+          else{
+             res.status(400).json({
+                success:false,
+                message:"User doesnot exists"
+             })
+          }
+    }
+    catch(err)
+    {
+        res.status(500).json({
+            success:false,
+            message:"Err in API Call of Fetch Message",
+        }) 
+    }
+}
+
+exports.Signup=async(req,res)=>{
+    const {email,password}=req.body;
+    console.log(req.body);
+    try{
+          const response=await User.find({email:email})
+          console.log(response)
+          if(response.length==0){
+             await User.create({email,password})
+             res.status(200).json({
+                success:true,
+                message:"user created sucessfully"
+             })
+          }
+          else{
+             res.status(400).json({
+                success:false,
+                message:"User already exists"
+             })
+          }
+    }
+    catch(err)
+    {
         res.status(500).json({
             success:false,
             message:"Err in API Call of Fetch Message",
