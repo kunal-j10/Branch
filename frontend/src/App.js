@@ -9,12 +9,12 @@ function App() {
   const [conversation,setConversation]=useState();
   const [idx,setIndex]=useState();
   const [reload,setreload]=useState(false);
-
+  const [search,setSearch]=useState({search:""});
   const popuptoggle = () => {
     document.getElementById("exampleModal").classList.toggle("hidden");
     setreload(!reload);
     setreply("");
-    document.getElementById('table').classList.toggle('blur-xl');
+    document.getElementById('myTable').classList.toggle('blur-xl');
   };
 
   const replyandupdate=async(index)=>{
@@ -45,6 +45,11 @@ function App() {
     setreply(value);
   }
 
+  const changeHandle=(e)=>{
+    const {name,value}=e.target;
+    setSearch({...search,[name]:value})
+  }
+
   const getData = async () => {
     try {
       const res = await axios.get("http://localhost:5000/fetchMessages");
@@ -67,14 +72,37 @@ function App() {
     }
   }
 
+  function filtertable() {
+    var input, filter, table, tr, td,txtValue1, i, txtValue,td1;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("myTable");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+      td = tr[i].getElementsByTagName("td")[0];
+      td1=tr[i].getElementsByTagName("td")[1];
+      if (td) {
+        txtValue = td.textContent || td.innerText ;
+        txtValue1=td1.textContent|| td1.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1 || txtValue1.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }       
+    }
+  }
+
+
   useEffect(() => {
     getData();
   }, [reload]);
   return (
+    <div className="flex flex-col p-2 justify-center items-center">
+      <input className="w-[40%] py-2 px-3 border-2 border-black outline-none rounded-lg" type="text" placeholder="Type something to search ..." id="myInput" name="search" value={search.search} onChange={changeHandle} onKeyUp={filtertable}></input>
     <div className="flex justify-center p-3 ">
-      <table className="auto w-[90%] text-center " id="table">
+      <table className="auto w-[90%] text-center " id="myTable" >
         <tr className=" text-white bg-indigo-600">
-          <th></th>
           <th className="px-6 py-3 font-bold">User Id</th>
           <th className="px-6 py-3 font-bold">Message</th>
           <th className="px-6 py-3 font-bold">Respond</th>
@@ -84,7 +112,6 @@ function App() {
             data.map((e, index) => {
               return (
                 <tr key={index} className="border border-grey-500">
-                  <td>{index}</td>
                   <td className="px-6 py-3 font-bold">{e.userId}</td>
                   <td className="px-6 py-3">{e.messageBody}</td>
                   <td className="px-6 py-3">
@@ -109,7 +136,7 @@ function App() {
       </table>
 
       <div
-        class="modal fade fixed top-[10%] left-[10%] right-[10%] w-[80%] hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
+        class="modal fade fixed top-[10%]  w-[80%] hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
         id="exampleModal"
         tabindex="-1"
         aria-labelledby="exampleModalLabel"
@@ -170,6 +197,8 @@ function App() {
       </div>
       
     </div>
+    </div>
+
   );
 }
 
