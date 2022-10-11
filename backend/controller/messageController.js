@@ -2,6 +2,7 @@ const Message=require('../model/messageSchema')
 const Conversation=require('../model/conversationSchema')
 const User = require('../model/userschema')
 
+// Logic to Display latest pending message of all user
 exports.fetchMessage=async(req,res)=>{
     try{
         const message=await Message.find({status:'pending'})
@@ -18,7 +19,6 @@ exports.fetchMessage=async(req,res)=>{
         map.forEach((value,key)=>{
            final.push({userId:key,messageBody:value.message,_id:value.messageId});
         })
-        // console.log(final)
         res.status(200).json(final)
     }
     catch(err){
@@ -29,6 +29,7 @@ exports.fetchMessage=async(req,res)=>{
     }
 }
 
+// Logic to Update reply to any particular message of a particular user by agent
 exports.replyMessage=async(req,res)=>{
     const {_id,reply}=req.body
     try{
@@ -47,11 +48,11 @@ exports.replyMessage=async(req,res)=>{
     }
 }
 
+// Logic to fetch previous conversation of a perticular user and agent
 exports.fetchPrevMessages=async(req,res)=>{
     const {userId}=req.body
     try{
        const prevmessages=await Message.find({userId:userId,status:"replied"})
-       console.log(prevmessages)
        prevmessages.sort((a,b)=>{
         return a.timeStamp<b.timeStamp?-1:1
        })
@@ -74,9 +75,9 @@ exports.fetchPrevMessages=async(req,res)=>{
     }
 }
 
+// Login an existing agent
 exports.Login=async(req,res)=>{
     const {email,password}=req.body;
-    console.log(req.body);
     try{
           const response=await User.find({email:email,password:password})
           if(response.length==1){
@@ -101,6 +102,7 @@ exports.Login=async(req,res)=>{
     }
 }
 
+// Create a new agent
 exports.Signup=async(req,res)=>{
     const {email,password}=req.body;
     console.log(req.body);

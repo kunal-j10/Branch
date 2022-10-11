@@ -1,5 +1,6 @@
 const mongoose=require('mongoose')
 
+// Schema for previous conversation with a perticular User ID
 const conversationSchema=new mongoose.Schema({
    userId:{
      type:Number

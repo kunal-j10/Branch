@@ -1,5 +1,6 @@
 const mongoose=require('mongoose')
 
+// Schema for all user chat data
 const messageSchema=new mongoose.Schema({
    userId:{
      type:Number

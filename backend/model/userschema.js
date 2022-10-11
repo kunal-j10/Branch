@@ -1,5 +1,7 @@
 const mongoose=require('mongoose')
 
+// Schema for login/signup
+
 const userschema=new mongoose.Schema({
    email:{
      type:String
